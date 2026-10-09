@@ -4,166 +4,202 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* Layout: one readable column; a one-page TLDR up top, then one plain-English finding per section, each with a single picture. */
+/* CreditSwan brief: one reading column; gold rule + brand bar; one-page TLDR, then one finding per section, each with one exhibit. */
 :root{
-  --bg:#F4EFE6; --surface:#FBF8F2; --ink:#16211F; --soft:rgba(22,33,31,.72); --faint:rgba(22,33,31,.5);
-  --line:rgba(22,33,31,.14); --gold:#A98543; --teal:#1C4A45; --pale:#E9C583; --track:rgba(22,33,31,.07);
-  --good:#1C4A45; --warn:#9A6A12; --bad:#8A2F33; --good-bg:rgba(28,74,69,.10); --warn-bg:rgba(233,197,131,.35); --bad-bg:rgba(138,47,51,.10);
+  --cs-ink:#16211F; --cs-cream:#F4EFE6; --cs-gold:#A98543; --cs-teal:#1C4A45; --cs-gilt:#E9C583; --cs-claret:#5C2B2E;
+  --bg:var(--cs-cream); --ink:var(--cs-ink); --soft:rgba(22,33,31,.78); --faint:rgba(22,33,31,.55);
+  --line:rgba(22,33,31,.14); --line-strong:rgba(22,33,31,.30); --track:rgba(22,33,31,.07); --panel:transparent;
+  --gold:var(--cs-gold); --teal:var(--cs-teal); --label:var(--cs-teal); --pale:var(--cs-gilt);
+  --neg:var(--cs-claret); --pos:var(--cs-teal);
+  --teal-soft:rgba(28,74,69,.35); --neg-soft:rgba(92,43,46,.35); --gilt-tint:rgba(233,197,131,.28); --teal-tint:rgba(28,74,69,.08); --neg-tint:rgba(92,43,46,.08);
+  --on-dark:#F4EFE6; --on-light:#16211F;
   --f-display:'Cormorant Garamond',Georgia,serif; --f-body:'Manrope',-apple-system,'Segoe UI',sans-serif; --f-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  color-scheme:light;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#141C1A; --surface:#1B2523; --ink:#F1ECE2; --soft:rgba(241,236,226,.74); --faint:rgba(241,236,226,.48);
-  --line:rgba(241,236,226,.15); --gold:#C9A25E; --teal:#7FB7AE; --pale:#E9C583; --track:rgba(241,236,226,.08);
-  --good:#86C3B9; --warn:#E9C583; --bad:#F09A90; --good-bg:rgba(134,195,185,.14); --warn-bg:rgba(233,197,131,.16); --bad-bg:rgba(240,154,144,.14); color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#141C1A; --surface:#1B2523; --ink:#F1ECE2; --soft:rgba(241,236,226,.74); --faint:rgba(241,236,226,.48);
-  --line:rgba(241,236,226,.15); --gold:#C9A25E; --teal:#7FB7AE; --pale:#E9C583; --track:rgba(241,236,226,.08);
-  --good:#86C3B9; --warn:#E9C583; --bad:#F09A90; --good-bg:rgba(134,195,185,.14); --warn-bg:rgba(233,197,131,.16); --bad-bg:rgba(240,154,144,.14); color-scheme:dark}
+/* Ink surface only when the reader presses Theme. */
+html[data-cs-surface="ink"]{
+  --bg:var(--cs-ink); --ink:var(--cs-cream); --soft:rgba(244,239,230,.70); --faint:rgba(244,239,230,.45);
+  --line:rgba(244,239,230,.18); --line-strong:rgba(244,239,230,.35); --track:rgba(244,239,230,.07); --panel:rgba(244,239,230,.04);
+  --teal:rgba(244,239,230,.70); --label:var(--cs-gilt); --neg:#FF8A80; --pos:rgba(244,239,230,.78);
+  --teal-soft:rgba(244,239,230,.30); --neg-soft:rgba(255,138,128,.35); --gilt-tint:rgba(233,197,131,.14); --teal-tint:rgba(244,239,230,.06); --neg-tint:rgba(255,138,128,.10);
+  color-scheme:dark;
+}
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
-.wrap{max-width:980px;margin:0 auto;padding-inline:20px;padding-block:0 72px}
-a{color:var(--teal)}
-a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-h1,h2,h3{font-family:var(--f-display);font-weight:600;letter-spacing:-.4px;line-height:1.12;margin:0;text-wrap:balance}
-h1{font-size:clamp(34px,5vw,50px)}
-h2{font-size:clamp(26px,3.6vw,34px)}
-h3{font-size:21px}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding-inline:24px;padding-block:0 80px}
+a{color:inherit;text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:1px solid var(--gold);outline-offset:2px}
+h1,h2,h3{font-family:var(--f-display);font-weight:600;letter-spacing:-.5px;line-height:1.1;margin:0;text-wrap:balance}
+h1{font-size:clamp(36px,5.2vw,52px);letter-spacing:-1px}
+h2{font-size:clamp(27px,3.6vw,34px)}
 p{margin:0}
-.label{font-family:var(--f-mono);font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:var(--teal);font-weight:500}
+.label{font-family:var(--f-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--label);font-weight:500}
 .muted{color:var(--soft)}
 .num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
 
-/* top bar */
+/* brand bar */
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
 .top::before{content:"";display:block;height:4px;background:var(--gold)}
-.top-in{max-width:980px;margin:0 auto;padding-inline:20px;display:flex;align-items:center;gap:18px;min-height:52px;flex-wrap:wrap}
-.top-in strong{font-family:var(--f-display);font-size:20px;font-weight:600;white-space:nowrap}
-.top nav{display:flex;gap:4px 16px;flex-wrap:wrap;margin-left:auto;font-size:13.5px}
-.top nav a{color:var(--soft);text-decoration:none;padding:4px 0}
-.top nav a:hover{color:var(--ink)}
+.top-row{max-width:1000px;margin:0 auto;padding-inline:24px;display:flex;align-items:center;gap:22px;min-height:60px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;white-space:nowrap}
+.brand svg{width:26px;height:26px;flex:none}
+.wordmark{font-family:var(--f-display);font-weight:600;font-size:22px;letter-spacing:-.3px}
+.packet{display:flex;align-items:baseline;gap:12px;border-left:1px solid var(--line);padding-left:20px;min-width:0}
+.packet strong{font-weight:500;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stamps{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:2px;font-family:var(--f-mono);font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--faint);white-space:nowrap}
+.stamps b{font-weight:500;color:var(--soft)}
+.btn{font-family:var(--f-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:8px 12px;border-radius:4px;border:1px solid var(--line-strong);background:transparent;color:var(--ink);cursor:pointer}
+.btn:hover{border-color:var(--gold)}
+.sub{border-top:1px solid var(--line);background:var(--bg)}
+.sub nav{max-width:1000px;margin:0 auto;padding-inline:24px;display:flex;flex-wrap:wrap;gap:0 22px}
+.sub a{display:flex;align-items:center;gap:7px;height:42px;font-size:13px;font-weight:500;color:var(--soft);text-decoration:none;border-bottom:2px solid transparent}
+.sub a i{font-style:normal;font-family:var(--f-mono);font-size:10.5px;color:var(--faint)}
+.sub a:hover,.sub a.on{color:var(--ink)}
+.sub a.on{border-bottom-color:var(--label)}
+.sub a.on i{color:var(--label)}
 
 /* sections */
-section{padding-block:56px 8px;border-bottom:1px solid var(--line)}
+section{padding-block:56px 12px;border-bottom:1px solid var(--line);scroll-margin-top:120px}
 section:last-of-type{border-bottom:0}
-.kicker{display:flex;gap:12px;align-items:baseline;margin-bottom:10px}
-.lede{font-size:17.5px;color:var(--soft);max-width:66ch;margin-top:12px}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:22px}
-.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:26px}
-.stack{display:grid;gap:14px}
-.source{font-family:var(--f-mono);font-size:11px;color:var(--faint);margin-top:14px;line-height:1.6}
-.chart-title{font-weight:600;font-size:15px;margin-bottom:14px}
+.kicker{margin-bottom:12px;display:block}
+.lede{font-size:17px;color:var(--soft);max-width:68ch;margin-top:14px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:24px;min-width:0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:28px}
+.stack{display:grid;gap:12px}
+.exno{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--label);margin-bottom:6px}
+.chart-title{font-family:var(--f-display);font-weight:600;font-size:21px;line-height:1.2;letter-spacing:-.3px;margin-bottom:16px;text-wrap:balance}
+.source{font-family:var(--f-mono);font-size:11px;color:var(--faint);margin-top:16px;line-height:1.7}
+.source::before{content:"SOURCE · ";letter-spacing:1.2px;color:var(--label)}
 
 /* TLDR */
-.tldr{padding-block:40px 40px}
-.tldr .meta{font-family:var(--f-mono);font-size:12px;color:var(--faint);margin-top:14px}
-.verdict{margin-top:26px;background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--gold);border-radius:6px;padding:24px}
-.verdict h2{font-size:clamp(24px,3.4vw,31px)}
-.big3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}
-.big3 div{border-left:3px solid var(--line);padding-left:14px}
-.big3 .v{font-family:var(--f-mono);font-size:30px;line-height:1.1;margin:6px 0 4px}
-.big3 .good .v{color:var(--good)} .big3 .warn .v{color:var(--warn)} .big3 .bad .v{color:var(--bad)}
-.big3 .good{border-color:var(--good)} .big3 .warn{border-color:var(--pale)} .big3 .bad{border-color:var(--bad)}
-.big3 small{display:block;color:var(--soft);font-size:13.5px;line-height:1.4}
-.points{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:12px}
-.points li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start}
+.tldr{position:relative;overflow:hidden;padding-block:44px 44px}
+.watermark{position:absolute;right:-60px;top:20px;width:300px;height:300px;opacity:.05;pointer-events:none;color:var(--ink)}
+.tldr > *:not(.watermark){position:relative}
+.verdict{margin-top:28px;border:1px solid var(--line);border-top:4px solid var(--gold);border-radius:4px;padding:26px;background:var(--panel)}
+.verdict h2{font-size:clamp(24px,3.3vw,31px)}
+.big3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:22px}
+.kpi{border:1px solid var(--line);border-radius:4px;padding:18px 20px}
+.kpi .v{font-family:var(--f-mono);font-size:34px;line-height:1;letter-spacing:-.5px;margin:12px 0 10px;font-variant-numeric:tabular-nums}
+.kpi .d{font-family:var(--f-mono);font-size:12px;letter-spacing:.3px;line-height:1.5}
+.kpi .d.pos{color:var(--pos)} .kpi .d.neg{color:var(--neg)} .kpi .d.cau{color:var(--soft)}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:8px;vertical-align:1px}
+.dot.pos{background:var(--pos)} .dot.neg{background:var(--neg)} .dot.cau{background:var(--gold)}
+.points{list-style:none;padding:0;margin:28px 0 0;display:grid;gap:0;border-top:1px solid var(--line)}
+.points li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:start;padding:13px 0;border-bottom:1px solid var(--line)}
 .points li b{font-weight:700}
-.points .n{font-family:var(--f-mono);font-size:12px;color:var(--gold);padding-top:3px}
-.asks{margin-top:26px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.ask{border:1px solid var(--line);border-radius:6px;padding:14px;background:var(--bg)}
-.ask .label{display:block;margin-bottom:6px}
+.points .n{font-family:var(--f-mono);font-size:12px;color:var(--label);padding-top:3px}
+.asks{margin-top:28px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.ask{border:1px solid var(--line);border-radius:4px;padding:16px}
+.ask .label{display:block;margin-bottom:8px}
+.ask.today{border-color:var(--line-strong)}
+.ask.today .label{color:var(--gold)}
 .ask p{font-size:14.5px;line-height:1.45}
 
 /* split bar */
-.split{display:flex;height:54px;border-radius:4px;overflow:hidden;margin-top:24px}
-.split div{display:flex;align-items:center;justify-content:center;font-family:var(--f-mono);font-size:13px;color:#16211F;white-space:nowrap;overflow:hidden;min-width:0}
-.legend{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:16px}
-.legend div{font-size:14px;line-height:1.45}
-.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:7px;vertical-align:0}
-.legend b{display:block;font-family:var(--f-mono);font-size:17px;margin:2px 0}
+.split{display:flex;height:56px;border-radius:2px;overflow:hidden;margin-top:28px;gap:2px}
+.split div{display:flex;align-items:center;justify-content:center;font-family:var(--f-mono);font-size:13px;white-space:nowrap;overflow:hidden;min-width:0}
+.legend{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:18px}
+.legend div{font-size:14px;line-height:1.45;color:var(--soft)}
+.legend .lt{display:flex;align-items:center;color:var(--ink);font-weight:500}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px}
+.legend b{display:block;font-family:var(--f-mono);font-weight:500;font-size:20px;color:var(--ink);margin:4px 0}
 
 /* horizontal bars */
-.hb{display:grid;gap:10px}
-.hb-row{display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);gap:12px;align-items:center}
+.hb{display:grid;gap:12px}
+.hb-row{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:14px;align-items:center}
 .hb-lab{font-size:14px;line-height:1.3}
-.hb-track{position:relative;height:26px;background:var(--track);border-radius:3px}
-.hb-fill{position:absolute;left:0;top:0;bottom:0;border-radius:3px}
+.hb-track{position:relative;height:24px;background:var(--track);border-radius:2px}
+.hb-fill{position:absolute;left:0;top:0;bottom:0;border-radius:2px;transform-origin:left;transition:transform 600ms cubic-bezier(.22,.61,.36,1)}
 .hb-val{position:absolute;top:50%;transform:translateY(-50%);font-family:var(--f-mono);font-size:12.5px;white-space:nowrap;padding-left:8px}
-.hb-mark{position:absolute;top:-6px;bottom:-6px;width:0;border-left:2px dashed var(--ink)}
-.hb-marklab{font-family:var(--f-mono);font-size:11px;color:var(--soft);margin:4px 0 0}
+.hb-mark{position:absolute;top:-6px;bottom:-6px;width:0;border-left:1.5px dashed var(--ink)}
+.hb-marklab{font-family:var(--f-mono);font-size:11px;color:var(--soft);margin-top:12px;letter-spacing:.3px}
 
 /* dollar bar */
-.dollar{display:flex;height:64px;border-radius:4px;overflow:hidden}
-.dollar div{display:flex;flex-direction:column;justify-content:center;padding:0 8px;font-size:12.5px;line-height:1.25;color:#16211F;min-width:0;overflow:hidden}
-.dollar b{font-family:var(--f-mono);font-size:14px}
-.keep{outline:3px solid var(--gold);outline-offset:-3px}
+.dollar{display:flex;height:66px;border-radius:2px;overflow:hidden;gap:2px}
+.dollar div{display:flex;flex-direction:column;justify-content:center;padding:0 10px;font-size:12.5px;line-height:1.25;min-width:0;overflow:hidden}
+.dollar b{font-family:var(--f-mono);font-weight:500;font-size:15px}
 
-/* column pairs */
-.cols{display:flex;align-items:flex-end;gap:14px;height:210px;border-bottom:1px solid var(--line);padding-top:20px}
+/* columns */
+.cols{display:flex;align-items:flex-end;gap:16px;height:210px;border-bottom:1px solid var(--line-strong);padding-top:22px}
 .col{flex:1;display:flex;gap:4px;align-items:flex-end;height:100%;min-width:0}
-.col div{flex:1;border-radius:3px 3px 0 0;position:relative;min-width:0}
-.col span{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font-family:var(--f-mono);font-size:11px;margin-bottom:3px;white-space:nowrap}
-.col-labs{display:flex;gap:14px;margin-top:6px}
-.col-labs div{flex:1;text-align:center;font-family:var(--f-mono);font-size:11px;color:var(--soft)}
-.key{display:flex;gap:16px;font-size:13px;color:var(--soft);margin-bottom:6px;flex-wrap:wrap}
-.key i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px}
+.col div{flex:1;border-radius:2px 2px 0 0;position:relative;min-width:0;transform-origin:bottom;transition:transform 600ms cubic-bezier(.22,.61,.36,1)}
+.col span{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font-family:var(--f-mono);font-size:11px;margin-bottom:4px;white-space:nowrap}
+.col-labs{display:flex;gap:16px;margin-top:8px}
+.col-labs div{flex:1;text-align:center;font-family:var(--f-mono);font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--faint)}
+.key{display:flex;gap:18px;font-family:var(--f-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--soft);margin-bottom:4px;flex-wrap:wrap}
+.key i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px}
 
-/* before/after tiles */
-.ba{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:26px}
-.ba > div{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px}
-.ba .from{font-family:var(--f-mono);font-size:14px;color:var(--faint);text-decoration:line-through;text-decoration-thickness:1px}
-.ba .to{font-family:var(--f-mono);font-size:26px;margin-top:2px}
-.ba .chg{font-family:var(--f-mono);font-size:12px;margin-top:4px}
-.ba small{display:block;font-size:13px;color:var(--soft);margin-top:8px}
-.up-bad{color:var(--bad)} .down-bad{color:var(--bad)}
+/* before/after */
+.ba{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:28px}
+.ba > div{border:1px solid var(--line);border-radius:4px;padding:18px}
+.ba .from{font-family:var(--f-mono);font-size:13px;color:var(--faint);text-decoration:line-through;text-decoration-thickness:1px;margin-top:10px}
+.ba .to{font-family:var(--f-mono);font-size:30px;line-height:1.1;margin-top:4px;font-variant-numeric:tabular-nums}
+.ba .chg{font-family:var(--f-mono);font-size:12px;margin-top:6px;color:var(--neg)}
 
-/* status list */
-.status{display:grid;gap:10px;margin-top:26px}
-.st{display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;align-items:start;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:6px}
-.pill{display:inline-block;font-family:var(--f-mono);font-size:11px;letter-spacing:.8px;text-transform:uppercase;padding:4px 8px;border-radius:3px;text-align:center}
-.pill.bad{background:var(--bad-bg);color:var(--bad)} .pill.warn{background:var(--warn-bg);color:var(--warn)} .pill.good{background:var(--good-bg);color:var(--good)}
+/* status rows */
+.status{display:grid;margin-top:28px;border-top:1px solid var(--line)}
+.st{display:grid;grid-template-columns:150px minmax(0,1fr);gap:18px;align-items:start;padding:15px 2px;border-bottom:1px solid var(--line)}
+.tag{display:inline-flex;align-items:center;font-family:var(--f-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:5px 8px;border-radius:2px;white-space:nowrap}
+.tag.neg{background:var(--neg-tint);color:var(--neg)} .tag.cau{background:var(--gilt-tint);color:var(--ink)} .tag.pos{background:var(--teal-tint);color:var(--pos)}
+.tag .dot{margin-right:7px}
 .st b{display:block;font-weight:600}
 .st p{font-size:14.5px;color:var(--soft)}
+.panel .status{margin-top:0}
 
 /* timeline */
-.tl{list-style:none;margin:26px 0 0;padding:0;border-left:2px solid var(--line)}
-.tl li{position:relative;padding:0 0 18px 22px}
-.tl li::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--teal)}
+.tl{list-style:none;margin:0;padding:0;border-left:1px solid var(--line-strong)}
+.tl li{position:relative;padding:0 0 20px 24px}
+.tl li::before{content:"";position:absolute;left:-5px;top:7px;width:9px;height:9px;border-radius:50%;background:var(--bg);border:1.5px solid var(--label)}
 .tl li.now::before{background:var(--gold);border-color:var(--gold)}
-.tl li.peak::before{border-color:var(--bad)}
-.tl .d{font-family:var(--f-mono);font-size:12.5px;color:var(--teal)}
+.tl li.peak::before{border-color:var(--neg)}
+.tl .d{font-family:var(--f-mono);font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--label)}
 .tl li.now .d{color:var(--gold)}
 .tl p{font-size:15px}
-
-.checklist{list-style:none;padding:0;margin:20px 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 24px}
+.checklist{list-style:none;padding:0;margin:0;display:grid;gap:12px}
 .checklist li{padding-left:24px;position:relative;font-size:15px}
-.checklist li::before{content:"";position:absolute;left:0;top:6px;width:12px;height:12px;border:1.5px solid var(--soft);border-radius:2px}
-.foot{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);font-size:14px;color:var(--soft);display:flex;gap:12px 24px;flex-wrap:wrap;justify-content:space-between}
+.checklist li::before{content:"";position:absolute;left:0;top:7px;width:11px;height:11px;border:1px solid var(--soft);border-radius:2px}
+.foot{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);font-size:14px;color:var(--soft);display:flex;gap:12px 24px;flex-wrap:wrap;justify-content:space-between;align-items:baseline}
+.foot .mono{font-family:var(--f-mono);font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--faint)}
+.pre{transform:scaleX(0)} .col div.pre{transform:scaleY(0)}
+@media (prefers-reduced-motion:reduce){.hb-fill,.col div{transition:none}.pre,.col div.pre{transform:none}}
 
+@media (max-width:1100px){.stamps{display:none}}
 @media (max-width:760px){
-  .grid2,.asks,.big3,.legend,.ba,.checklist{grid-template-columns:minmax(0,1fr)}
-  .hb-row{grid-template-columns:minmax(0,1fr)}
+  .wrap,.top-row,.sub nav{padding-inline:16px}
+  .packet{display:none}
+  .sub{display:none}
+  .grid2,.asks,.big3,.legend,.ba{grid-template-columns:minmax(0,1fr)}
+  .hb-row{grid-template-columns:minmax(0,1fr);gap:6px}
   .st{grid-template-columns:minmax(0,1fr);gap:8px}
-  .top nav{display:none}
   .cols{gap:8px}.col-labs{gap:8px}
   .split div span{display:none}
   .dollar div{font-size:10.5px;padding:0 5px}.dollar b{font-size:12.5px}
+  section{scroll-margin-top:70px}
 }
-@media (min-width:761px) and (max-width:900px){.asks{grid-template-columns:repeat(2,minmax(0,1fr))}.ba{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:761px) and (max-width:900px){.asks,.ba{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head><body>
 
-<header class="top"><div class="top-in">
-  <strong>PetWise · Fall launch brief</strong>
-  <nav aria-label="Sections">
-    <a href="#tldr">TLDR</a><a href="#ask">The ask</a><a href="#math">The math</a><a href="#amazon">Amazon</a><a href="#ready">Readiness</a><a href="#walmart">Walmart</a><a href="#smartykat">SmartyKat+</a><a href="#next">Next steps</a>
-  </nav>
-</div></header>
+
+<header class="top">
+<div class="top-row">
+  <a class="brand" href="#tldr" aria-label="CreditSwan"><svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M8 30c0-9 6-16 15-16 4 0 7 1 9 4-2-1-4-1-6 0 3 0 5 2 6 5-4-2-8-1-11 2-3 3-8 4-13 5z" fill="currentColor"/><circle cx="30.5" cy="15.5" r="1.4" fill="#A98543"/></svg><span class="wordmark">CreditSwan</span></a>
+  <div class="packet"><span class="label">CEO brief</span><strong>PetWise · Fall 2026 launch investment</strong></div>
+  <div class="stamps"><span>For <b>PetWise CEO</b></span><span>Refreshed <b>9 Oct 2026</b> · Confidential</span></div>
+  <button class="btn" id="btn-theme" type="button" aria-label="Switch between cream and ink">Theme</button>
+</div>
+<div class="sub"><nav aria-label="Sections" id="subnav">
+  <a href="#tldr"><i>A</i>TLDR</a><a href="#ask"><i>B</i>The ask</a><a href="#math"><i>C</i>The math</a><a href="#amazon"><i>D</i>Amazon</a><a href="#ready"><i>E</i>Readiness</a><a href="#walmart"><i>F</i>Walmart</a><a href="#smartykat"><i>G</i>SmartyKat+</a><a href="#next"><i>H</i>Next steps</a>
+</nav></div>
+</header>
 
 <main class="wrap">
 
 <!-- ================= TLDR ================= -->
 <section class="tldr" id="tldr">
-  <span class="label">For the PetWise CEO · 9 Oct 2026 · Confidential</span>
+  <svg class="watermark" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M8 30c0-9 6-16 15-16 4 0 7 1 9 4-2-1-4-1-6 0 3 0 5 2 6 5-4-2-8-1-11 2-3 3-8 4-13 5z" fill="currentColor"/><circle cx="30.5" cy="15.5" r="1.4" fill="currentColor"/></svg>
+  <span class="label">CEO brief · 9 Oct 2026</span>
   <h1 style="margin-top:12px">Fund the launch basics now. Make Amazon prove it pays before it gets more money.</h1>
   <p class="lede">Marketing asked for $837.5K of extra fall spend on top of the $2.03M already approved. This brief splits that ask into four decisions, using PetWise’s own cost sheets, Amazon’s September results and Chewy’s stock data.</p>
 
@@ -171,9 +207,9 @@ section:last-of-type{border-bottom:0}
     <span class="label">The answer in one line</span>
     <h2 style="margin-top:8px">Approve $253K today, hold $428K until a 4-week Amazon test reads on 10 November, and approve the $150K September already spent.</h2>
     <div class="big3">
-      <div class="good"><span class="label">Approve now</span><div class="v">$253K</div><small>Creators, reviews, Chewy search, Meta on in-stock items, Walmart TikTok test</small></div>
-      <div class="warn"><span class="label">Hold for proof</span><div class="v">$428K</div><small>Mostly extra Amazon search and display ads, released only if a test shows they pay</small></div>
-      <div class="bad"><span class="label">Amazon today</span><div class="v">$1.99</div><small>Sales per $1 of ads in September, against about $5 needed to break even</small></div>
+      <div class="kpi"><span class="label">Approve now</span><div class="v">$253K</div><div class="d pos"><span class="dot pos"></span>Creators, reviews, Chewy search, in-stock Meta, Walmart test</div></div>
+      <div class="kpi"><span class="label">Hold for proof</span><div class="v">$428K</div><div class="d cau"><span class="dot cau"></span>Extra Amazon ads, released only if a test shows they pay</div></div>
+      <div class="kpi"><span class="label">Amazon sales per $1 of ads</span><div class="v">$1.99</div><div class="d neg"><span class="dot neg"></span>September, against about $5 needed to break even</div></div>
     </div>
   </div>
 
@@ -186,8 +222,8 @@ section:last-of-type{border-bottom:0}
   </ol>
 
   <div class="asks">
-    <div class="ask"><span class="label">Decide today</span><p>Approve the $150K already spent in September and release the $253K.</p></div>
-    <div class="ask"><span class="label">Decide today</span><p>Cut the nine Amazon campaigns returning under $1 per $1.</p></div>
+    <div class="ask today"><span class="label">Decide today</span><p>Approve the $150K already spent in September and release the $253K.</p></div>
+    <div class="ask today"><span class="label">Decide today</span><p>Cut the nine Amazon campaigns returning under $1 per $1.</p></div>
     <div class="ask"><span class="label">By 12 Oct</span><p>Start the 4-week Amazon test, run by finance, not the agency.</p></div>
     <div class="ask"><span class="label">By 10 Nov</span><p>Release or hold the $407K of extra Amazon spend based on the test.</p></div>
   </div>
@@ -195,59 +231,60 @@ section:last-of-type{border-bottom:0}
 
 <!-- ================= THE ASK ================= -->
 <section id="ask">
-  <div class="kicker"><span class="label">The ask</span></div>
+  <span class="kicker label">The ask</span>
   <h2>We split the $837.5K request into four separate decisions</h2>
   <p class="lede">Most of the money that is ready to go is small and launch-critical. Most of the money that should wait is extra Amazon advertising.</p>
-  <div class="split" role="img" aria-label="$837.5K split: $150K ratify, $253K approve, $428K hold, $6K cut">
-    <div style="flex:150;background:var(--pale)"><span>$150K</span></div>
-    <div style="flex:253.3;background:#8FBDB5"><span>$253K</span></div>
-    <div style="flex:428.1;background:#C9B48A"><span>$428K</span></div>
-    <div style="flex:6.1;background:#D9A39E"></div>
+  <span class="exno" style="margin-top:28px">Exhibit 1 · Incremental ask by decision, Sep–Dec 2026</span>
+  <div class="split" style="margin-top:8px" role="img" aria-label="$837.5K split: $150K ratify, $253K approve, $428K hold, $6K cut">
+    <div style="flex:150;background:var(--cs-gilt);color:var(--on-light)"><span>$150K</span></div>
+    <div style="flex:253.3;background:var(--cs-teal);color:var(--on-dark)"><span>$253K</span></div>
+    <div style="flex:428.1;background:var(--cs-gold);color:var(--on-light)"><span>$428K</span></div>
+    <div style="flex:6.1;background:var(--cs-claret)"></div>
   </div>
   <div class="legend">
-    <div><i style="background:var(--pale)"></i>Already spent<b class="num">$150K</b>September ads that ran before approval. Approve it and tighten sign-off.</div>
-    <div><i style="background:#8FBDB5"></i>Approve now<b class="num">$253K</b>Upfluence creators $70K, reviews $15K, Chewy search $48K, Meta $45K, Walmart TikTok $75K.</div>
-    <div><i style="background:#C9B48A"></i>Hold for proof<b class="num">$428K</b>Amazon search $160K and display $247K, plus $21K of Meta on items not yet in stock or selling.</div>
-    <div><i style="background:#D9A39E"></i>Cut<b class="num">$6K</b>Meta behind SmartyKat Treats, which has 3 days of stock at Chewy.</div>
+    <div><span class="lt"><i style="background:var(--cs-gilt)"></i>Already spent</span><b class="num">$150K</b>September ads that ran before approval. Approve it and tighten sign-off.</div>
+    <div><span class="lt"><i style="background:var(--cs-teal)"></i>Approve now</span><b class="num">$253K</b>Upfluence creators $70K, reviews $15K, Chewy search $48K, Meta $45K, Walmart TikTok $75K.</div>
+    <div><span class="lt"><i style="background:var(--cs-gold)"></i>Hold for proof</span><b class="num">$428K</b>Amazon search $160K and display $247K, plus $21K of Meta on items not yet in stock or selling.</div>
+    <div><span class="lt"><i style="background:var(--cs-claret)"></i>Cut</span><b class="num">$6K</b>Meta behind SmartyKat Treats, which has 3 days of stock at Chewy.</div>
   </div>
-  <p class="source">Source: Fall 2026 launch investment plan. The two Meta holds release once stock is confirmed (new lines) or Chewy sells 25+ bags a week (Chip Dips).</p>
+  <p class="source">Fall 2026 launch investment plan. The two Meta holds release once stock is confirmed (new lines) or Chewy sells 25+ bags a week (Chip Dips).</p>
 </section>
 
 <!-- ================= THE MATH ================= -->
 <section id="math">
-  <div class="kicker"><span class="label">The math</span></div>
+  <span class="kicker label">The math</span>
   <h2>Each $1 of ads needs about $5 of sales to pay for itself. Our ads bring in $2–3.</h2>
   <p class="lede">The plan counted 40% of the shelf price as profit. But retailers keep part of the price, deduct fees, and the product has to be made. What is left for PetWise is 14–19¢ per retail dollar on Chewy and Amazon.</p>
 
   <div class="panel" style="margin-top:26px">
-    <p class="chart-title">Where $1 of Snooze sales on Amazon goes</p>
+    <span class="exno">Exhibit 2</span><p class="chart-title">Where $1 of Snooze sales on Amazon goes</p>
     <div class="dollar" role="img" aria-label="Of $1: Amazon keeps 29 cents, fees 18 cents, product cost 34 cents, PetWise keeps 19 cents">
-      <div style="flex:28.6;background:#D8D2C6"><b>29¢</b>Amazon’s margin</div>
-      <div style="flex:17.6;background:#E6CF9F"><b>18¢</b>Fees and deductions</div>
-      <div style="flex:34.5;background:#A9C9C3"><b>34¢</b>Making and shipping it</div>
-      <div class="keep" style="flex:19.3;background:#E9C583"><b>19¢</b>PetWise keeps</div>
+      <div style="flex:28.6;background:rgba(22,33,31,.30);color:var(--on-light)"><b>29¢</b>Amazon’s margin</div>
+      <div style="flex:17.6;background:var(--cs-gilt);color:var(--on-light)"><b>18¢</b>Fees and deductions</div>
+      <div style="flex:34.5;background:var(--cs-teal);color:var(--on-dark)"><b>34¢</b>Making and shipping it</div>
+      <div style="flex:19.3;background:var(--cs-gold);color:var(--on-light)"><b>19¢</b>PetWise keeps</div>
     </div>
     <p class="muted" style="margin-top:12px;font-size:14.5px">To earn back $1 of ads at 19¢ a dollar, we need about <b>$5.20 of sales</b>.</p>
   </div>
 
   <div class="grid2">
     <div class="panel">
-      <p class="chart-title">Sales needed per $1 of ads to break even</p>
+      <span class="exno">Exhibit 3</span><p class="chart-title">Sales needed per $1 of ads to break even</p>
       <div class="hb" id="be"></div>
       <p class="hb-marklab">Dashed line: what Amazon actually returned in September, $1.99</p>
     </div>
     <div class="panel">
-      <p class="chart-title">Profit from the full $837.5K, three ways of counting</p>
+      <span class="exno">Exhibit 4</span><p class="chart-title">Profit from the full $837.5K, three ways of counting</p>
       <div class="hb" id="net"></div>
       <p class="hb-marklab">Same spend and same ad results; only what each sale is worth changes.</p>
     </div>
   </div>
-  <p class="source">Sources: PetWise launch cost sheets (TLP) at 24.5% tariff; Snooze margin by retailer; fall launch plan; PetWise marketplace database. “Sales the ads create” removes sales that would have happened anyway.</p>
+  <p class="source">PetWise launch cost sheets (TLP) at 24.5% tariff; Snooze margin by retailer; fall launch plan; PetWise marketplace database. “Sales the ads create” removes sales that would have happened anyway.</p>
 </section>
 
 <!-- ================= AMAZON ================= -->
 <section id="amazon">
-  <div class="kicker"><span class="label">Amazon</span></div>
+  <span class="kicker label">Amazon</span>
   <h2>Amazon is costing more and selling less, before we add a dollar</h2>
   <p class="lede">From April to September the Amazon account spent 74% more and sold 27% less, because each click now costs 2.5 times as much. Adding $407K into this would mostly buy more expensive clicks.</p>
   <div class="ba">
@@ -258,73 +295,73 @@ section:last-of-type{border-bottom:0}
   </div>
   <div class="grid2">
     <div class="panel">
-      <p class="chart-title">September: the worst campaigns get twice the budget of the best</p>
+      <span class="exno">Exhibit 5</span><p class="chart-title">September: the worst campaigns get twice the budget of the best</p>
       <div class="hb" id="waste"></div>
       <p class="muted" style="margin-top:12px;font-size:14.5px">Moving the $66K from the 9 weakest campaigns would cover two-thirds of the $253K we approve today, so new cash drops to about $85K.</p>
     </div>
     <div class="panel">
-      <p class="chart-title">Last year: Amazon returns halved when spending ramped up; Chewy held</p>
+      <span class="exno">Exhibit 6</span><p class="chart-title">Last year: Amazon returns halved when spending ramped up; Chewy held</p>
       <div class="key"><span><i style="background:var(--gold)"></i>Amazon</span><span><i style="background:var(--teal)"></i>Chewy</span></div>
       <div class="cols" id="lastq4"></div>
       <div class="col-labs"><div>Sep</div><div>Oct</div><div>Nov</div><div>Dec</div><div>Jan</div></div>
       <p class="muted" style="margin-top:12px;font-size:14.5px">Sales per $1 of ads, Sep 2025 – Jan 2026. Expect the same squeeze this November.</p>
     </div>
   </div>
-  <p class="source">Sources: Amazon advertising account report, Apr–Sep 2026; Pacvue weekly ad reports, Sep 2025–Jan 2026. The two reports cover different ad types, so compare trends, not levels.</p>
+  <p class="source">Amazon advertising account report, Apr–Sep 2026; Pacvue weekly ad reports, Sep 2025–Jan 2026. The two reports cover different ad types, so compare trends, not levels.</p>
 </section>
 
 <!-- ================= READINESS ================= -->
 <section id="ready">
-  <div class="kicker"><span class="label">Readiness</span></div>
+  <span class="kicker label">Readiness</span>
   <h2>Ads only work if the product is on the shelf, and much of it is not yet</h2>
   <p class="lede">Paying for clicks onto out-of-stock pages wastes money and hurts search ranking. Launch media should start only when stock and reviews are in place.</p>
   <div class="status">
-    <div class="st"><span class="pill bad">Not on shelf</span><div><b>Snooze at Chewy</b><p>4 items listed, 0 on hand, 82 on order. The other 16 Snooze items sell on Amazon and Walmart, where we have no stock data.</p></div></div>
-    <div class="st"><span class="pill warn">On the way</span><div><b>SmartyKat+ scratchers stocked by Chewy (9 items)</b><p>Arrive at Chewy on 12 October for the 19 October launch. Reviews go live between 30 October and 23 November.</p></div></div>
-    <div class="st"><span class="pill warn">Confirm</span><div><b>SmartyKat+ shipped from PetWise (20 beds, 12 scratchers)</b><p>Chewy does not hold these. We need PetWise’s own inventory count before advertising them.</p></div></div>
-    <div class="st"><span class="pill bad">Low</span><div><b>SmartyKat Treats</b><p>3 days of stock at Chewy, selling about 16 bags a week. Chewy’s forecast is three times actual sales.</p></div></div>
-    <div class="st"><span class="pill bad">Slipping</span><div><b>Chewy overall</b><p>We filled 86% of Chewy’s orders, down from 94% in August. 30 items with demand are out of stock, led by Petlinks and GoDog.</p></div></div>
-    <div class="st"><span class="pill warn">Gap</span><div><b>Chewy’s Q4 plan</b><p>About 112,000 units of Chewy’s Q4 forecast have no stock or order behind them. That is a reorder opportunity for October.</p></div></div>
+    <div class="st"><span class="tag neg"><span class="dot neg"></span>Not on shelf</span><div><b>Snooze at Chewy</b><p>4 items listed, 0 on hand, 82 on order. The other 16 Snooze items sell on Amazon and Walmart, where we have no stock data.</p></div></div>
+    <div class="st"><span class="tag cau"><span class="dot cau"></span>On the way</span><div><b>SmartyKat+ scratchers stocked by Chewy (9 items)</b><p>Arrive at Chewy on 12 October for the 19 October launch. Reviews go live between 30 October and 23 November.</p></div></div>
+    <div class="st"><span class="tag cau"><span class="dot cau"></span>Confirm</span><div><b>SmartyKat+ shipped from PetWise (20 beds, 12 scratchers)</b><p>Chewy does not hold these. We need PetWise’s own inventory count before advertising them.</p></div></div>
+    <div class="st"><span class="tag neg"><span class="dot neg"></span>Low</span><div><b>SmartyKat Treats</b><p>3 days of stock at Chewy, selling about 16 bags a week. Chewy’s forecast is three times actual sales.</p></div></div>
+    <div class="st"><span class="tag neg"><span class="dot neg"></span>Slipping</span><div><b>Chewy overall</b><p>We filled 86% of Chewy’s orders, down from 94% in August. 30 items with demand are out of stock, led by Petlinks and GoDog.</p></div></div>
+    <div class="st"><span class="tag cau"><span class="dot cau"></span>Gap</span><div><b>Chewy’s Q4 plan</b><p>About 112,000 units of Chewy’s Q4 forecast have no stock or order behind them. That is a reorder opportunity for October.</p></div></div>
   </div>
-  <p class="source">Sources: Chewy vendor statements to 28 Sep 2026; SmartyKat+ SKU plan; Chewy sales in the PetWise database.</p>
+  <p class="source">Chewy vendor statements to 28 Sep 2026; SmartyKat+ SKU plan; Chewy sales in the PetWise database.</p>
 </section>
 
 <!-- ================= WALMART ================= -->
 <section id="walmart">
-  <div class="kicker"><span class="label">Walmart</span></div>
+  <span class="kicker label">Walmart</span>
   <h2>Walmart is our best-paying channel, but we cannot see what we sell there</h2>
   <p class="lede">Walmart takes small fees, so Snooze keeps 48¢ of each retail dollar there, almost three times Chewy. The TikTok test should pay. The problem is measurement: our data only shows the few Walmart.com orders we ship ourselves.</p>
   <div class="grid2">
     <div class="panel">
-      <p class="chart-title">What PetWise keeps from $1 of Snooze sales</p>
+      <span class="exno">Exhibit 7</span><p class="chart-title">What PetWise keeps from $1 of Snooze sales</p>
       <div class="hb" id="keep"></div>
     </div>
-    <div class="panel stack">
-      <p class="chart-title">What we can and cannot see</p>
-      <div class="st" style="grid-template-columns:110px minmax(0,1fr)"><span class="pill good">Positive</span><div><b>Breakeven $2.10 vs plan $3.00</b><p>The TikTok test should clear breakeven if the plan holds.</p></div></div>
-      <div class="st" style="grid-template-columns:110px minmax(0,1fr)"><span class="pill bad">Blind</span><div><b>Walmart’s own sales are not in our data</b><p>That is where Snooze sells. Own-shipped Walmart.com orders fell 31% in September, with no Snooze orders.</p></div></div>
-      <div class="st" style="grid-template-columns:110px minmax(0,1fr)"><span class="pill warn">Ask</span><div><b>Get Walmart reporting first</b><p>Release October’s $25K once Walmart Connect ad reporting, Retail Link sales and a comparison group are set up.</p></div></div>
+    <div class="panel">
+      <p class="chart-title">What we can and cannot see</p><div class="status">
+      <div class="st" ><span class="tag pos"><span class="dot pos"></span>Positive</span><div><b>Breakeven $2.10 vs plan $3.00</b><p>The TikTok test should clear breakeven if the plan holds.</p></div></div>
+      <div class="st" ><span class="tag neg"><span class="dot neg"></span>Blind</span><div><b>Walmart’s own sales are not in our data</b><p>That is where Snooze sells. Own-shipped Walmart.com orders fell 31% in September, with no Snooze orders.</p></div></div>
+      <div class="st" ><span class="tag cau"><span class="dot cau"></span>Ask</span><div><b>Get Walmart reporting first</b><p>Release October’s $25K once Walmart Connect ad reporting, Retail Link sales and a comparison group are set up.</p></div></div></div>
     </div>
   </div>
-  <p class="source">Sources: Snooze margin by retailer; PetWise database (Walmart.com own-fulfilled orders to 4 Oct 2026).</p>
+  <p class="source">Snooze margin by retailer; PetWise database (Walmart.com own-fulfilled orders to 4 Oct 2026).</p>
 </section>
 
 <!-- ================= SMARTYKAT+ ================= -->
 <section id="smartykat">
-  <div class="kicker"><span class="label">SmartyKat+</span></div>
+  <span class="kicker label">SmartyKat+</span>
   <h2>SmartyKat+ will roughly break even in Q4 at best; judge it on 2027</h2>
   <p class="lede">The July plan tripled the scratcher forecast. Even if it comes true, SmartyKat+ earns about what is spent directly on it this quarter. On the original plan it falls well short.</p>
   <div class="panel" style="margin-top:26px">
-    <p class="chart-title">SmartyKat+ Q4 earnings before advertising vs spend aimed only at SmartyKat+</p>
+    <span class="exno">Exhibit 8</span><p class="chart-title">SmartyKat+ Q4 earnings before advertising vs spend aimed only at SmartyKat+</p>
     <div class="hb" id="smk"></div>
     <p class="muted" style="margin-top:12px;font-size:14.5px">Spend is Upfluence creators ($70K) and SmartyKat+ Meta ($6K). The beds are the thinnest item in the programme, keeping 14¢ per retail dollar.</p>
   </div>
-  <p class="source">Sources: SmartyKat+ Chewy cost sheet and SKU plan; Chewy scratch costing workbook (matched to launched items by name and price; to be confirmed).</p>
+  <p class="source">SmartyKat+ Chewy cost sheet and SKU plan; Chewy scratch costing workbook (matched to launched items by name and price; to be confirmed).</p>
 </section>
 
 <!-- ================= NEXT ================= -->
 <section id="next">
-  <div class="kicker"><span class="label">Next steps</span></div>
+  <span class="kicker label">Next steps</span>
   <h2>Four dates matter between now and Black Friday</h2>
   <div class="grid2">
     <ol class="tl">
@@ -351,7 +388,7 @@ section:last-of-type{border-bottom:0}
 
   <div class="foot">
     <span>The full analysis, with every chart, table, assumption and a spending simulator: <a href="detail.html">open the detailed review</a>.</span>
-    <span class="num" style="font-size:12px">Prepared 9 Oct 2026 · Confidential</span>
+    <span class="mono">CreditSwan · Prepared for the PetWise CEO · 9 Oct 2026 · Confidential</span>
   </div>
 </section>
 </main>
@@ -366,7 +403,7 @@ section:last-of-type{border-bottom:0}
       const neg = r.v < 0;
       const val = `<span class="hb-val" style="left:${w}%">${r.t}</span>`;
       const mark = o.mark != null ? `<span class="hb-mark" style="left:${o.mark / max * 100}%" aria-hidden="true"></span>` : '';
-      return `<div class="hb-row"><div class="hb-lab">${r.l}</div><div class="hb-track"><div class="hb-fill" style="width:${w}%;background:${r.c || (neg ? 'var(--bad)' : 'var(--gold)')}"></div>${val}${mark}</div></div>`;
+      return `<div class="hb-row"><div class="hb-lab">${r.l}</div><div class="hb-track"><div class="hb-fill" style="width:${w}%;background:${r.c || (neg ? 'var(--neg)' : 'var(--gold)')}"></div>${val}${mark}</div></div>`;
     }).join('');
   }
   bars($('be'), [
@@ -382,10 +419,10 @@ section:last-of-type{border-bottom:0}
     {l:'Only sales the ads create', v:-553, t:'−$553K'}
   ], {max:760});
   bars($('waste'), [
-    {l:'9 weakest: spend', v:66.0, t:'$66K', c:'var(--bad)'},
-    {l:'9 weakest: sales', v:24.8, t:'$25K', c:'#D9A39E'},
+    {l:'9 weakest: spend', v:66.0, t:'$66K', c:'var(--neg)'},
+    {l:'9 weakest: sales', v:24.8, t:'$25K', c:'var(--neg-soft)'},
     {l:'23 best: spend', v:31.4, t:'$31K', c:'var(--teal)'},
-    {l:'23 best: sales', v:168.8, t:'$169K', c:'#8FBDB5'}
+    {l:'23 best: sales', v:168.8, t:'$169K', c:'var(--teal-soft)'}
   ], {max:230});
   bars($('keep'), [
     {l:'Walmart', v:47.9, t:'48¢', c:'var(--teal)'},
@@ -395,10 +432,30 @@ section:last-of-type{border-bottom:0}
   bars($('smk'), [
     {l:'Earnings · original plan', v:29, t:'$29K'},
     {l:'Earnings · July plan (3× scratchers)', v:76.5, t:'$76K'},
-    {l:'Spend aimed at SmartyKat+', v:76, t:'$76K', c:'var(--bad)'}
+    {l:'Spend aimed at SmartyKat+', v:76, t:'$76K', c:'var(--neg)'}
   ], {max:105});
   const amz = [7.78,5.97,3.85,4.11,4.42], chw = [5.30,5.37,5.18,6.56,7.43], mx = 9;
   $('lastq4').innerHTML = amz.map((a,i) => `<div class="col"><div style="height:${a/mx*100}%;background:var(--gold)"><span>$${a.toFixed(1)}</span></div><div style="height:${chw[i]/mx*100}%;background:var(--teal)"><span>$${chw[i].toFixed(1)}</span></div></div>`).join('');
+})();
+</script>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  try{ if(localStorage.getItem('cs-surface')==='ink') root.dataset.csSurface='ink'; }catch(e){}
+  document.getElementById('btn-theme').addEventListener('click',function(){
+    var ink=root.dataset.csSurface!=='ink'; if(ink) root.dataset.csSurface='ink'; else delete root.dataset.csSurface;
+    try{ localStorage.setItem('cs-surface', ink?'ink':'cream'); }catch(e){}
+  });
+  var links=[].slice.call(document.querySelectorAll('#subnav a')), secs=links.map(function(a){return document.querySelector(a.getAttribute('href'));});
+  function spy(){ var y=150, idx=0; secs.forEach(function(s,i){ if(s && s.getBoundingClientRect().top<=y) idx=i; });
+    if(innerHeight+scrollY>=document.documentElement.scrollHeight-2) idx=secs.length-1;
+    links.forEach(function(a,i){ a.classList.toggle('on', i===idx); if(i===idx) a.setAttribute('aria-current','true'); else a.removeAttribute('aria-current'); }); }
+  addEventListener('scroll',spy,{passive:true}); spy();
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.querySelectorAll('.pre').forEach(function(n,i){ n.style.transitionDelay=(i*45)+'ms'; requestAnimationFrame(function(){ n.classList.remove('pre'); }); }); io.unobserve(e.target);} }); },{threshold:.2});
+    document.querySelectorAll('.hb,.cols').forEach(function(g){ var r=g.getBoundingClientRect(); if(r.top>innerHeight){ g.querySelectorAll('.hb-fill,.col div').forEach(function(n){n.classList.add('pre');}); io.observe(g);} });
+  }
 })();
 </script>
 

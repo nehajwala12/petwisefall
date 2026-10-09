@@ -1,4 +1,4 @@
-PetWise Fall Launch Brief — Vercel package
+PetWise Fall Launch Brief (CreditSwan) — Vercel package
 
 index.html   CEO brief: one-page TLDR, then one finding per section with a simple visual.
 detail.html  Full analysis (every chart, table, assumption, and the spending simulator), linked from the brief's footer.
